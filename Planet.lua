@@ -42,7 +42,8 @@ function Planet:make(dt, SupplySpeed)
 end
 
 function Planet:IsHover(mouse_x, mouse_y)
-	if self:distance(mouse_x, mouse_y) then
+	local render_x, render_y = Func.Map_To_Render(self.x, self.y)
+	if Func.distance(mouse_x, mouse_y, render_x, render_y, self.size) then
 		self.hover = true
 		self:ColorSet()
 		if love.mouse.isDown(1) and not self.debounce then
