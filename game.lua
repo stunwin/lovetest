@@ -1,3 +1,6 @@
+--
+-- TODO: rename me to like func or helper or something
+--
 Class = require("classic")
 Func = Class:extend()
 
@@ -23,6 +26,60 @@ end
 function Func.distance(x1, y1, x2, y2, threshold)
 	if math.sqrt((x2 - x1) ^ 2 + (y2 - y1) ^ 2) < threshold then
 		return true
+	end
+end
+
+-- NOTE: hey the normal algorithm goes until it fills the screen, we don't want to do that. n is the number of points to be generated
+function poisson(width, height, n)
+	-- minimum distance between points
+	local r = 100
+	-- maximum tries before discarding candidiate point
+	local k = 30
+	-- width of each grid square
+	local w = math.floor(r / math.sqrt(2))
+	-- the list of active points that need to be tested
+	local active = {}
+	-- initialize array of grid squares
+	local cols = width / w
+	local rows = height / w
+	local grid = {}
+	local function setup()
+		for i = 0, cols do
+			grid[i] = {}
+			for j = 0, rows do
+				grid[i][j] = -1
+			end
+		end
+
+		local fx = math.floor(math.random(0, width))
+		local fy = math.floor(math.random(0, height))
+		local point = vector(math.floor(math.random(0, width)), math.floor(math.random(0, height)))
+		local i = math.floor(point.x / w)
+		local j = math.floor(point.y / w)
+		grid[i][j] = point
+		table.insert(active, point)
+	end
+
+	local function newpoint()
+		if #active > 0 then
+			local i = math.floor(math.random(#active))
+			local pos = active[i]
+			for j = 1, k do
+				local sample = vector.randon()
+				local m = math.random(r, 2 * r)
+				sample:setmag(m)
+				sample = sample + pos
+				if test_sample(sample) then
+					table.insert(active, sample)
+					local x = math.floor(sample.x / w)
+					local y = math.floor(sample.x / w)
+					grid[x][y] = sample
+					break
+				elseif j == k - 1 then
+					table.remove(active[i])
+				end
+			end
+		end
 	end
 end
 return Func

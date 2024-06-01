@@ -18,6 +18,7 @@ function love.load()
 	Camera = require("Camera")
 	Controller = require("Controller")
 	Func = require("game")
+	vector = require("vector")
 	love.window.setMode(CAM_WIDTH, CAM_HEIGHT, { resizable = false, vsync = 0, minwidth = 400, minheight = 300 })
 	SupplySpeed = 1
 	Cam = Camera(0, 0, CAM_WIDTH, CAM_HEIGHT)
