@@ -3,7 +3,7 @@
 --
 Class = require("classic")
 Func = Class:extend()
-
+vector = require("vector")
 function Func:new() end
 
 function Func.test(value)
@@ -30,7 +30,7 @@ function Func.distance(x1, y1, x2, y2, threshold)
 end
 
 -- NOTE: hey the normal algorithm goes until it fills the screen, we don't want to do that. n is the number of points to be generated
-function poisson(width, height, n)
+function Func.poisson(width, height, n)
 	-- minimum distance between points
 	local r = 100
 	-- maximum tries before discarding candidiate point
@@ -44,18 +44,19 @@ function poisson(width, height, n)
 	local rows = height / w
 	local grid = {}
 	local function setup()
-		for i = 0, cols do
+		for i = 1, cols do
 			grid[i] = {}
-			for j = 0, rows do
+			for j = 1, rows do
 				grid[i][j] = -1
 			end
 		end
-
-		local fx = math.floor(math.random(0, width))
-		local fy = math.floor(math.random(0, height))
-		local point = vector(math.floor(math.random(0, width)), math.floor(math.random(0, height)))
-		local i = math.floor(point.x / w)
-		local j = math.floor(point.y / w)
+		local fx = math.floor(math.random(1, width))
+		local fy = math.floor(math.random(1, height))
+		local point = vector(fx, fy)
+		print(point)
+		local i = math.floor(fx / w)
+		local j = math.floor(fy / w)
+		print(i .. j)
 		grid[i][j] = point
 		table.insert(active, point)
 	end
@@ -81,5 +82,19 @@ function poisson(width, height, n)
 			end
 		end
 	end
+
+	setup()
+	return grid
+	-- for i, col in pairs(grid) do
+	-- 	for j, row in pairs(col) do
+	-- 		if grid[i][j] ~= -1 then
+	-- 			local dx = grid[i][j].x
+	-- 			local dy = grid[i][j].y
+	-- 			love.graphics.setColor(255, 255, 255, 1)
+	-- 			love.graphics.circle("fill", dx, dy, 10)
+	-- 		end
+	-- 	end
+	-- end
 end
+
 return Func

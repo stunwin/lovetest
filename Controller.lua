@@ -24,6 +24,10 @@ function Controller:Key_Input()
 			Cam.scale = Cam.scale - 0.1
 			Cam.x = math.floor(Cam.x - Cam.width * 0.05)
 			Cam.y = math.floor(Cam.y - Cam.height * 0.05)
+
+			--Debug
+			-- elseif k == "lctrl" then --set to whatever key you want to use
+			-- 	debug.debug()
 		end
 	end
 end

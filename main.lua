@@ -2,7 +2,7 @@ PlanetNames = { "Earth", "Mars", "Magrathea", "Alderaan", "bleek", "blork", "blo
 PlanetList = {}
 CAM_WIDTH = 800
 CAM_HEIGHT = 600
-WORLD_WIDTH = 1200
+WORLD_WIDTH = 1000
 WORLD_HEIGHT = 1000
 
 White = { 255, 255, 255 }
@@ -24,6 +24,21 @@ function love.load()
 	Cam = Camera(0, 0, CAM_WIDTH, CAM_HEIGHT)
 	PlanetFactory()
 	Mouse_Drag = false
+
+	pgrid = Func.poisson(WORLD_WIDTH, WORLD_HEIGHT)
+
+	-- TODO: need to look through pgrid and turn valid entries into a new planet that gets pushed to PlanetList
+	-- then you can reinstate the planet renderer and stuff will move around again
+	for i, col in pairs(pgrid) do
+		for j, row in pairs(col) do
+			if pgrid[i][j] ~= -1 then
+				local dx = pgrid[i][j].x
+				local dy = pgrid[i][j].y
+				love.graphics.setColor(255, 255, 255, 1)
+				love.graphics.circle("fill", dx, dy, 100)
+			end
+		end
+	end
 end
 
 function love.update(dt)
@@ -35,12 +50,14 @@ function love.update(dt)
 	end
 end
 
-function love.draw()
-	Cam:render()
-	local cam_coord = ("x = " .. Cam.x .. " y = " .. Cam.y .. " scale = " .. Cam.scale)
-	love.graphics.setColor(White)
-	love.graphics.print(cam_coord, 0, 0)
-end
+function love.draw() end
+
+-- function love.draw()
+-- 	Cam:render()
+-- 	local cam_coord = ("x = " .. Cam.x .. " y = " .. Cam.y .. " scale = " .. Cam.scale)
+-- 	love.graphics.setColor(White)
+-- 	love.graphics.print(cam_coord, 0, 0)
+-- end
 
 function PlanetFactory()
 	for i, planet in pairs(PlanetNames) do
