@@ -18,7 +18,7 @@ function love.load()
 	Camera = require("Camera")
 	Controller = require("Controller")
 	Func = require("game")
-	love.window.setMode(CAM_WIDTH, CAM_HEIGHT, { resizable = false, vsync = 0, minwidth = 400, minheight = 300 })
+
 	SupplySpeed = 1
 	Cam = Camera(0, 0, CAM_WIDTH, CAM_HEIGHT)
 	PlanetFactory()
@@ -29,6 +29,8 @@ function love.update(dt)
 	Controller:Mouse_Input()
 	Controller:Key_Input()
 
+	-- TODO: make an update function that is called every turn
+	-- include total planet list, and onscreen list
 	for i, planet in pairs(PlanetList) do
 		planet:make(dt, SupplySpeed)
 	end
@@ -36,11 +38,13 @@ end
 
 function love.draw()
 	Cam:render()
+	-- TODO: make a debug function that can be toggled
 	local cam_coord = ("x = " .. Cam.x .. " y = " .. Cam.y .. " scale = " .. Cam.scale)
 	love.graphics.setColor(White)
 	love.graphics.print(cam_coord, 0, 0)
 end
 
+-- TODO: make a game setup function that houses this and all  the other declarations and variables
 function PlanetFactory()
 	for i, planet in pairs(PlanetNames) do
 		if i == 1 then
