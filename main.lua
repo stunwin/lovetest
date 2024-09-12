@@ -31,7 +31,7 @@ function love.update(dt)
 
 	-- TODO: make an update function that is called every turn
 	-- include total planet list, and onscreen list
-	for i, planet in pairs(PlanetList) do
+	for _, planet in pairs(PlanetList) do
 		planet:make(dt, SupplySpeed)
 	end
 end

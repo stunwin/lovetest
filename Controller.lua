@@ -52,7 +52,11 @@ end
 
 function Controller:Hover_Check(mouse_x, mouse_y)
 	for i, planet in pairs(PlanetList) do
-		planet:IsHover(mouse_x, mouse_y)
+		if Cam:is_visible(planet.x, planet.y) then
+			planet.hover = true
+		else
+			planet.hover = false
+		end
 	end
 end
 return Controller
