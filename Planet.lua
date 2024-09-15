@@ -26,7 +26,7 @@ function Planet:new(x, y, planet_code, player)
 
 	self.supplyOutput = ("Supply: " .. self.supply .. "Fleet:" .. self.fleet)
 	self.hover = false
-	self.color = White
+	self.color = "White"
 	self.debounce = false
 end
 
@@ -42,8 +42,8 @@ function Planet:make(dt, SupplySpeed)
 end
 
 function Planet:IsHover(mouse_x, mouse_y)
-	local render_x, render_y = Func.Map_To_Render(self.x, self.y)
-	if Func.distance(mouse_x, mouse_y, render_x, render_y, self.size) then
+	local render_x, render_y = Camera.Map_To_Render(self.x, self.y)
+	if h.distance(mouse_x, mouse_y, render_x, render_y, self.size) then
 		self.hover = true
 		self:ColorSet()
 		if love.mouse.isDown(1) and not self.debounce then
@@ -60,11 +60,11 @@ function Planet:DrawPlanet() end
 
 function Planet:ColorSet()
 	if self.hover then
-		self.color = White
+		self.color = "White"
 	elseif self.playerowned then
-		self.color = Amber
+		self.color = "Amber"
 	else
-		self.color = Green
+		self.color = "Green"
 	end
 end
 

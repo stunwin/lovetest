@@ -28,10 +28,10 @@ function Controller:Key_Input()
 	end
 end
 
-function Controller:Mouse_Input()
+function Controller:Mouse_Input(Render_List)
 	local mouse_x, mouse_y = love.mouse.getPosition()
 
-	self:Hover_Check(mouse_x, mouse_y)
+	self:Hover_Check(mouse_x, mouse_y, Render_List)
 
 	if love.mouse.isDown(1) then
 		if Mouse_Drag then
@@ -50,9 +50,11 @@ function Controller:Mouse_Input()
 	end
 end
 
-function Controller:Hover_Check(mouse_x, mouse_y)
-	for i, planet in pairs(PlanetList) do
-		if Cam:is_visible(planet.x, planet.y) then
+function Controller:Hover_Check(mouse_x, mouse_y, arr)
+	for i, planet in ipairs(arr) do
+		local rx, ry = Cam:map_to_render(planet.x, planet.y)
+		local rscale = planet.size * Cam.scale
+		if Helper.distance(mouse_x, mouse_y, rx, ry, rscale) then
 			planet.hover = true
 		else
 			planet.hover = false
