@@ -33,7 +33,10 @@ end
 
 function love.draw()
 	Rendermanager:render(Render_List)
-	-- TODO: make a debug function that can be toggled
+
+	local cam_coord = ("x = " .. Cam.x .. " y = " .. Cam.y .. " scale = " .. Cam.scale)
+	love.graphics.setColor(Config.COLORS["White"])
+	love.graphics.print(cam_coord, 0, 0)
 
 	-- NOTE: this will definitely come back to bite you
 	Render_List = {}

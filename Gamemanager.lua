@@ -10,6 +10,7 @@ function Gamemanager:PlanetFactory()
 	local height = Config.WORLD_HEIGHT
 	local planets = {}
 	for i, planet in pairs(list) do
+		local isPlayer
 		if i == 1 then
 			isPlayer = true
 		else

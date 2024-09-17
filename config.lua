@@ -6,10 +6,14 @@ local config = {
 	WORLD_WIDTH = 1200,
 	WORLD_HEIGHT = 1000,
 	COLORS = {
-		White = { 255, 255, 255 },
-		Green = { 124, 252, 0 },
-		Red = { 196, 32, 32 },
-		Amber = { 230, 171, 21 },
+		White = { 1, 1, 1 },
+		Green = { 0.486, 0.988, 0 },
+		Red = { 0.769, 0.125, 0.125 },
+		Amber = { 0.902, 0.671, 0.082 },
 	},
+	WHITE = { 1, 1, 1 },
+	GREEN = { 0.486, 0.988, 0 },
+	RED = { 0.769, 0.125, 0.125 },
+	AMBER = { 0.902, 0.671, 0.082 },
 }
 return config

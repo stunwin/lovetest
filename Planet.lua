@@ -3,30 +3,29 @@ require("Gameobject")
 Planet = Gameobject:extend()
 local roles = { "supply", "produce" }
 
-function Planet:new(x, y, planet_code, player)
+function Planet:new(x, y, planet_code, isPlayer)
 	Planet.super.new(self, x, y)
 	-- assert(role == "supply" or role == "produce", "incorrect role assignment")
 	self.x = math.floor(x)
 	self.y = math.floor(y)
 	self.code = planet_code
-	self.playerowned = player
+	self.isPlayer = isPlayer
 	self.size = 30
 
-	if self.playerowned then
+	if self.isPlayer then
+		self.roleindex = 1
 		self.role = roles[self.roleindex]
 		self.fleet = 0
 		self.supply = 0
-		self.roleindex = 1
 	else
 		self.role = "enemy"
 		self.fleet = 10
 		self.supply = 0
-		self.roleindex = 1
 	end
 
 	self.supplyOutput = ("Supply: " .. self.supply .. "Fleet:" .. self.fleet)
 	self.hover = false
-	self.color = "White"
+	self.color = "Red"
 	self.debounce = false
 end
 
@@ -45,9 +44,8 @@ function Planet:IsHover(mouse_x, mouse_y)
 	local render_x, render_y = Camera.Map_To_Render(self.x, self.y)
 	if h.distance(mouse_x, mouse_y, render_x, render_y, self.size) then
 		self.hover = true
-		self:ColorSet()
 		if love.mouse.isDown(1) and not self.debounce then
-			self:RoleSwap()
+			self:On_Click()
 		end
 		self.debounce = love.mouse.isDown(1)
 	else
@@ -56,19 +54,31 @@ function Planet:IsHover(mouse_x, mouse_y)
 	end
 end
 
-function Planet:DrawPlanet() end
+function Planet:Update_Tooltip()
+	local supplyOutput = (
+		self.code
+		.. "\nSupply: "
+		.. math.floor(self.supply)
+		.. "\nFleet: "
+		.. math.floor(self.fleet)
+		.. "\nRole: "
+		.. tostring(self.role)
+	)
 
-function Planet:ColorSet()
-	if self.hover then
-		self.color = "White"
-	elseif self.playerowned then
-		self.color = "Amber"
-	else
-		self.color = "Green"
-	end
+	return supplyOutput
 end
 
-function Planet:RoleSwap()
+-- function Planet:ColorSet()
+-- 	if self.hover then
+-- 		self.color = "White"
+-- 	elseif self.isPlayer then
+-- 		self.color = "Amber"
+-- 	else
+-- 		self.color = "Green"
+-- 	end
+-- end
+
+function Planet:On_Click()
 	self.roleindex = self.roleindex + 1
 	if self.roleindex > #roles then
 		self.roleindex = 1

@@ -31,7 +31,7 @@ end
 function Controller:Mouse_Input(Render_List)
 	local mouse_x, mouse_y = love.mouse.getPosition()
 
-	self:Hover_Check(mouse_x, mouse_y, Render_List)
+	local click_object = self:Hover_Check(mouse_x, mouse_y, Render_List)
 
 	if love.mouse.isDown(1) then
 		if Mouse_Drag then
@@ -54,11 +54,13 @@ function Controller:Hover_Check(mouse_x, mouse_y, arr)
 	for i, planet in ipairs(arr) do
 		local rx, ry = Cam:map_to_render(planet.x, planet.y)
 		local rscale = planet.size * Cam.scale
-		if Helper.distance(mouse_x, mouse_y, rx, ry, rscale) then
-			planet.hover = true
-		else
+		if not Helper.distance(mouse_x, mouse_y, rx, ry, rscale) then
 			planet.hover = false
+		else
+			planet.hover = true
+			return planet
 		end
 	end
+	return false
 end
 return Controller
