@@ -9,26 +9,26 @@ function Rendermanager:test()
 	print(self.Colors["White"])
 end
 function Rendermanager:render(arr)
-	for _, planet in pairs(arr) do
-		local render_x, render_y = Cam:map_to_render(planet.x, planet.y)
-		if not Cam:is_visible(planet) then
+	for _, obj in pairs(arr) do
+		local render_x, render_y = Cam:map_to_render(obj.x, obj.y)
+		if not Cam:is_visible(obj) then
 			goto continue
 		end
 
-		love.graphics.setColor(Config.COLORS[planet.color])
-		love.graphics.circle("fill", render_x, render_y, planet.size * Cam.scale)
+		love.graphics.setColor(Config.COLORS[obj.color])
+		love.graphics.circle("fill", render_x, render_y, obj.size * Cam.scale)
 
-		if planet.role == "supply" then
+		if obj.role == "supply" then
 			love.graphics.setColor(Config.COLORS["Red"])
 			love.graphics.circle("fill", render_x - 30, render_y - 30, 10)
-		elseif planet.role == "produce" then
+		elseif obj.role == "produce" then
 			love.graphics.setColor(Config.COLORS["Amber"])
-			love.graphics.circle("fill", render_x, render_y - 45, planet.fleet)
+			love.graphics.circle("fill", render_x, render_y - 45, obj.fleet)
 		end
 
 		::continue::
 
-		self:Render_Tooltip(planet)
+		self:Render_Tooltip(obj)
 	end
 	local cam_coord = ("x = " .. Cam.x .. " y = " .. Cam.y .. " scale = " .. Cam.scale)
 	love.graphics.setColor(Config.COLORS["White"])

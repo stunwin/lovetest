@@ -2,7 +2,11 @@ Class = require("classic")
 
 Controller = Class:extend()
 
-function Controller:new() end
+function Controller:new()
+	self.debounce = false
+	self.old_x = 0
+	self.old_y = 0
+end
 
 function Controller:Key_Input()
 	function love.keypressed(k)
@@ -33,21 +37,25 @@ function Controller:Mouse_Input(Render_List)
 
 	local click_object = self:Hover_Check(mouse_x, mouse_y, Render_List)
 
-	if love.mouse.isDown(1) then
+	if love.mouse.isDown(1) and click_object and not self.debounce then
+		click_object:On_Click()
+	elseif love.mouse.isDown(1) then
 		if Mouse_Drag then
-			local xdiff = mouse_x - old_x
-			local ydiff = mouse_y - old_y
+			local xdiff = mouse_x - self.old_x
+			local ydiff = mouse_y - self.old_y
 			Cam.x = Cam.x - xdiff
 			Cam.y = Cam.y - ydiff
-			old_x = mouse_x
-			old_y = mouse_y
+			self.old_x = mouse_x
+			self.old_y = mouse_y
 		end
+
 		Mouse_Drag = true
-		old_x = mouse_x
-		old_y = mouse_y
+		self.old_x = mouse_x
+		self.old_y = mouse_y
 	else
 		Mouse_Drag = false
 	end
+	self.debounce = love.mouse.isDown(1)
 end
 
 function Controller:Hover_Check(mouse_x, mouse_y, arr)
@@ -61,6 +69,6 @@ function Controller:Hover_Check(mouse_x, mouse_y, arr)
 			return planet
 		end
 	end
-	return false
+	-- return false
 end
 return Controller
