@@ -10,6 +10,7 @@ function Camera:new(x, y, width, height)
 	self.scale = 1
 	self.width = width
 	self.height = height
+	love.window.setMode(width, height)
 end
 
 function Camera:map_to_render(map_x, map_y)

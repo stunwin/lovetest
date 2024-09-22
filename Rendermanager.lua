@@ -11,11 +11,8 @@ end
 function Rendermanager:render(arr)
 	for _, obj in pairs(arr) do
 		local render_x, render_y = Cam:map_to_render(obj.x, obj.y)
-		if not Cam:is_visible(obj) then
-			goto continue
-		end
 
-		love.graphics.setColor(Config.COLORS[obj.color])
+		Rendermanager:Set_Planet_Color(obj)
 		love.graphics.circle("fill", render_x, render_y, obj.size * Cam.scale)
 
 		if obj.role == "supply" then
@@ -26,13 +23,18 @@ function Rendermanager:render(arr)
 			love.graphics.circle("fill", render_x, render_y - 45, obj.fleet)
 		end
 
-		::continue::
-
 		self:Render_Tooltip(obj)
 	end
 	local cam_coord = ("x = " .. Cam.x .. " y = " .. Cam.y .. " scale = " .. Cam.scale)
 	love.graphics.setColor(Config.COLORS["White"])
 	love.graphics.print(cam_coord, 0, 0)
+end
+function Rendermanager:Set_Planet_Color(obj)
+	local table = { supply = "White", produce = "Amber", enemy = "Red" }
+	local coloridx = table[obj.role]
+	print(coloridx)
+	local color = Config.COLORS[coloridx]
+	love.graphics.setColor(color)
 end
 
 function Rendermanager:Render_Tooltip(obj)

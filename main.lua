@@ -24,8 +24,6 @@ function love.update(dt)
 	Controller:Mouse_Input(Render_List)
 	Controller:Key_Input()
 
-	-- TODO: make an update function that is called every turn
-	-- include total planet list, and onscreen list
 	for _, planet in pairs(Planetlist) do
 		planet:make(dt, SupplySpeed)
 	end

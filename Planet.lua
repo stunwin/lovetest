@@ -23,7 +23,6 @@ function Planet:new(x, y, planet_code, isPlayer)
 		self.supply = 0
 	end
 
-	self.supplyOutput = ("Supply: " .. self.supply .. "Fleet:" .. self.fleet)
 	self.hover = false
 	self.color = "Red"
 	self.debounce = false
@@ -55,30 +54,27 @@ function Planet:IsHover(mouse_x, mouse_y)
 end
 
 function Planet:Update_Tooltip()
-	local supplyOutput = (
-		self.code
-		.. "\nSupply: "
-		.. math.floor(self.supply)
-		.. "\nFleet: "
-		.. math.floor(self.fleet)
-		.. "\nRole: "
-		.. tostring(self.role)
-	)
-
+	local supplyOutput
+	if self.role == "enemy" then
+		supplyOutput = ("Enemy Planet" .. "\n Fleet: " .. self.fleet)
+	else
+		supplyOutput = (
+			self.code
+			.. "\nSupply: "
+			.. math.floor(self.supply)
+			.. "\nFleet: "
+			.. math.floor(self.fleet)
+			.. "\nRole: "
+			.. tostring(self.role)
+		)
+	end
 	return supplyOutput
 end
 
--- function Planet:ColorSet()
--- 	if self.hover then
--- 		self.color = "White"
--- 	elseif self.isPlayer then
--- 		self.color = "Amber"
--- 	else
--- 		self.color = "Green"
--- 	end
--- end
-
 function Planet:On_Click()
+	if self.role == "enemy" then
+		return
+	end
 	self.roleindex = self.roleindex + 1
 	if self.roleindex > #roles then
 		self.roleindex = 1
